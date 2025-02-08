@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/franciscofferraz/go-struct/internal/logger"
-	"github.com/franciscofferraz/go-struct/internal/utils"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/logger"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/utils"
 	"go.uber.org/zap"
 )
 

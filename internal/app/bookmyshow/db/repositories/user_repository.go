@@ -3,7 +3,7 @@ package repositories
 import (
 	"database/sql"
 
-	"github.com/franciscofferraz/go-struct/internal/api/models"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/models"
 )
 
 type UserRepositoryInterface interface {

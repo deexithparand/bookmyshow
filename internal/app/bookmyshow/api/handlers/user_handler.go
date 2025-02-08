@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/franciscofferraz/go-struct/internal/api/models"
-	"github.com/franciscofferraz/go-struct/internal/customerrors"
-	"github.com/franciscofferraz/go-struct/internal/db/repositories"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/models"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/customerrors"
+	"github.com/deexithparand/bookmyshow/internal/db/repositories"
+
 	"golang.org/x/crypto/bcrypt"
 )
 

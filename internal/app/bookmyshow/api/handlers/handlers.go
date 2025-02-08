@@ -1,6 +1,6 @@
 package handlers
 
-import "github.com/franciscofferraz/go-struct/internal/db/repositories"
+import "github.com/deexithparand/bookmyshow/internal/db/repositories"
 
 type Handlers struct {
 	UserHandler *UserHandler

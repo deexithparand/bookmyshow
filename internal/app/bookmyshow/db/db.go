@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/franciscofferraz/go-struct/internal/config"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/config"
 	_ "github.com/lib/pq"
 )
 

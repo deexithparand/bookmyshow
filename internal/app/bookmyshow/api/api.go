@@ -10,10 +10,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/franciscofferraz/go-struct/internal/api/handlers"
-	"github.com/franciscofferraz/go-struct/internal/api/middleware"
-	"github.com/franciscofferraz/go-struct/internal/api/routes"
-	"github.com/franciscofferraz/go-struct/internal/config"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/handlers"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/middleware"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/routes"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/config"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 )
@@ -26,7 +26,6 @@ type API struct {
 }
 
 func NewAPI(log *zap.SugaredLogger, cfg *config.Config, h *handlers.Handlers) *API {
-
 	router := chi.NewRouter()
 
 	router.Use(middleware.RecoverPanic)
@@ -41,6 +40,7 @@ func NewAPI(log *zap.SugaredLogger, cfg *config.Config, h *handlers.Handlers) *A
 }
 
 func (a *API) Run() error {
+
 	srv := &http.Server{
 		Addr:         a.Config.Port,
 		Handler:      a.Router,

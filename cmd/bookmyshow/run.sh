@@ -1,0 +1,1 @@
+go run internal/app/bookmyshow/main.go

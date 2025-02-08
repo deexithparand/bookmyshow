@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/franciscofferraz/go-struct/internal/api/handlers"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/handlers"
 	"github.com/go-chi/chi/v5"
 )
 

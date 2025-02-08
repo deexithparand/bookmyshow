@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/franciscofferraz/go-struct/internal/customerrors"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/customerrors"
 )
 
 func RecoverPanic(next http.Handler) http.Handler {

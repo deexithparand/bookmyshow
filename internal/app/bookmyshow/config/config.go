@@ -5,8 +5,8 @@ import (
 	"flag"
 	"os"
 
-	"github.com/franciscofferraz/go-struct/internal/api/handlers"
-	"github.com/franciscofferraz/go-struct/internal/db/repositories"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/handlers"
+	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/db/repositories"
 )
 
 type Config struct {

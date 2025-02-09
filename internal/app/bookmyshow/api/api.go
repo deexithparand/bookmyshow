@@ -2,89 +2,55 @@ package api
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
-	"sync"
-	"syscall"
 	"time"
-
-	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/handlers"
-	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/middleware"
-	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/api/routes"
-	"github.com/deexithparand/bookmyshow/internal/app/bookmyshow/config"
-	"github.com/go-chi/chi/v5"
-	"go.uber.org/zap"
 )
 
-type API struct {
-	Router *chi.Mux
-	Config *config.Config
-	Logger *zap.SugaredLogger
-	Wg     *sync.WaitGroup
+type ServerHandler struct{}
+
+func (sh *ServerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Server request entry point\n"))
 }
 
-func NewAPI(log *zap.SugaredLogger, cfg *config.Config, h *handlers.Handlers) *API {
-	router := chi.NewRouter()
+func StartServer() {
 
-	router.Use(middleware.RecoverPanic)
+	var msh *ServerHandler
 
-	routes.SetupRoutes(router, h)
-
-	return &API{
-		Router: router,
-		Logger: log,
-		Config: cfg,
-	}
-}
-
-func (a *API) Run() error {
-
-	srv := &http.Server{
-		Addr:         a.Config.Port,
-		Handler:      a.Router,
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
+	server := &http.Server{
+		Addr:    ":5555",
+		Handler: msh,
 	}
 
-	shutdownError := make(chan error)
+	// Channel to listen for OS signals
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
 
+	// Run server in a goroutine
 	go func() {
-		quit := make(chan os.Signal, 1)
-		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-		sign := <-quit
-
-		a.Logger.Infow("Caught signal", "signal", sign.String())
-
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-
-		err := srv.Shutdown(ctx)
-		if err != nil {
-			shutdownError <- err
+		fmt.Println("Starting server on : " + server.Addr)
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			fmt.Printf("ListenAndServe error: %v\n", err)
 		}
-
-		a.Logger.Infow("Completing background tasks", "addr", srv.Addr)
-
-		a.Wg.Wait()
-		shutdownError <- nil
 	}()
 
-	a.Logger.Infow("Starting server", "addr", srv.Addr, "env", a.Config.Env)
+	// Block until a signal is received
+	<-stop
+	fmt.Println("\nShutting down server...")
 
-	err := srv.ListenAndServe()
-	if !errors.Is(err, http.ErrServerClosed) {
-		return err
+	// cleanup process can be done now
+
+	// Create context with timeout for graceful shutdown
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		fmt.Printf("Server forced to shutdown: %v\n", err)
+		return
 	}
 
-	err = <-shutdownError
-	if err != nil {
-		return err
-	}
+	fmt.Println("Server exited cleanly")
 
-	a.Logger.Infow("Stopped server", "addr", srv.Addr)
-
-	return nil
 }

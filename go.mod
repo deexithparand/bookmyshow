@@ -1,3 +1,3 @@
-module github.com/deexithparand/bookmyshow
+module bookmyshow
 
 go 1.23.4

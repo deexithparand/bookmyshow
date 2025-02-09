@@ -1,0 +1,12 @@
+# Set the working directory
+root = "."
+  
+# Watch only Go files
+[[watch]]
+  path = "cmd/bookmyshow"
+  include = ["*.go"]
+  exclude = ["*_test.go"]
+
+# Command to run your application
+[build]
+  cmd = "go run cmd/bookmyshow/main.go"

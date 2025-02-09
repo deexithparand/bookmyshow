@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bookmyshow/internal/app/bookmyshow/api/routes"
 	"context"
 	"fmt"
 	"net/http"
@@ -9,15 +10,9 @@ import (
 	"time"
 )
 
-type ServerHandler struct{}
-
-func (sh *ServerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Server request entry point\n"))
-}
-
 func StartServer() {
 
-	var msh *ServerHandler
+	msh := routes.RouterInit()
 
 	server := &http.Server{
 		Addr:    ":5555",
